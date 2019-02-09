@@ -1,0 +1,199 @@
+
+Freescale HC12-Assembler 
+(c) Copyright Freescale 1987-2010
+
+ Abs. Rel.   Loc    Obj. code   Source line
+ ---- ----   ------ ---------   -----------
+    1    1                      ;*****************************************************************
+    2    2                      ;* ClockASM.ASM
+    3    3                      ;
+    4    4                      ;Code Entry, Assembly, and Execution 
+    5    5                      ;(Put your name and date here) 
+    6    6                      ;--------------------------------------- 
+    7    7                      ;* -this is the sample code for Lab1
+    8    8                      ;* -for Full Chip Simulation or Board -- select your target
+    9    9                      ;* DO NOT DELETE ANY LINES IN THIS TEMPLATE
+   10   10                      ;* --ONLY FILL IN SECTIONS
+   11   11                      ;*****************************************************************
+   12   12                      ; export symbols
+   13   13                                  XDEF Entry, _Startup            ; export 'Entry' symbol
+   14   14                                  ABSENTRY Entry        ; for absolute assembly: mark this as application entry point
+   15   15                      
+   16   16                      ; Include derivative-specific definitions 
+   17   17                      		INCLUDE 'derivative.inc' 
+ 8677 8653i                             ENDIF
+ 8686   18                      		
+ 8687   19                      ;-------------------------------------------------- 
+ 8688   20                      ; Equates Section  
+ 8689   21                      ;----------------------------------------------------  
+ 8690   22          0000 2000   ROMStart    EQU  $2000  ; absolute address to place my code
+ 8691   23          0000 0080   TEN     EQU   $80
+ 8692   24          0000 3E6A   OC2VEC  EQU   $3E6A  ; vector under D-bug12 (board)
+ 8693   25          0000 FFEA   OC2VECSIM EQU $FFEA  ; simulation uses actual vector
+ 8694   26          0000 0004   C2F     EQU   $04
+ 8695   27          0000 0004   C2I     EQU   $04
+ 8696   28          0000 0004   IOS2    EQU   $04
+ 8697   29                      ;---------------------------------------------------- 
+ 8698   30                      ; Variable/Data Section
+ 8699   31                      ;----------------------------------------------------  
+ 8700   32                                  ORG RAMStart   ; loc $1000  (RAMEnd = $3FFF)
+ 8701   33                      ; Insert here your data definitions here
+ 8702   34                      
+ 8703   35  a001000             COUNT       DS   1
+ 8704   36  a001001             NUMTICKS    DS   1
+ 8705   37  a001002             SECONDS     DS   1   ;keeps track of seconds
+ 8706   38  a001003             MINUTES     DS   1   ;keeps track of minutes
+ 8707   39  a001004             HOURS       DS   1   ;keeps track of hours
+ 8708   40                       
+ 8709   41                      
+ 8710   42                             INCLUDE 'utilities.inc'
+ 8826   43                             INCLUDE 'LCD.inc'
+ 9168   44                      
+ 9169   45                      ;---------------------------------------------------- 
+ 9170   46                      ; Code Section
+ 9171   47                      ;---------------------------------------------------- 
+ 9172   48                                  ORG   ROMStart  ; loc $2000
+ 9173   49                      Entry:
+ 9174   50                      _Startup:
+ 9175   51                                  ; remap the RAM &amp; EEPROM here. See EB386.pdf
+ 9176   52          0000 0000    ifdef _HCS12_SERIALMON
+ 9187   63                        endif
+ 9188   64                      
+ 9189   65                      ;---------------------------------------------------- 
+ 9190   66                      ; Insert your code here
+ 9191   67                      ;---------------------------------------------------- 
+ 9192   68                              
+ 9193   69                      MAIN
+ 9194   70                      *SET UP THE (interrupt) SERVICE & INITIALIZE
+ 9195   71  a002000 1410                SEI             ; turn off interrupts while initializing intr.
+ 9196   72  a002002 163A 00             JSR   TermInit  ; Initialize Serial Port when not
+ 9197   73                                             ; ...using built-in DBUG12 utilities
+
+Freescale HC12-Assembler 
+(c) Copyright Freescale 1987-2010
+
+ Abs. Rel.   Loc    Obj. code   Source line
+ ---- ----   ------ ---------   -----------
+ 9198   74  a002005 7910 00           	CLR   COUNT
+ 9199   75  a002008 7910 02             CLR   SECONDS
+ 9200   76  a00200B 7910 03             CLR   MINUTES
+ 9201   77  a00200E 7910 04             CLR   HOURS
+ 9202   78  a002011 180B 6410           MOVB  #100,NUMTICKS  ; number of ticks (interrupts) for 1 second
+             002015 01         
+ 9203   79                              
+ 9204   80                      *SET UP THE SERVICE (ISR) & INITIALIZE -continued
+ 9205   81                           
+ 9206   82                             ;bset    DDRT,%00100000   ; PT5 (spkr) is output
+ 9207   83  a002016 180B 8000          movb    #$80,TSCR1     ; enable TCNT
+             00201A 46         
+ 9208   84  a00201B 4C40 04            bset    TIOS,IOS2      ; choose OC2 for timer ch. 2
+ 9209   85  a00201E 180B 2000          movb    #$20,TSCR2     ; set prescaler to 32
+             002022 4D         
+ 9210   86  a002023 180B 0400          movb    #C2F,TFLG1    ; clear  C2F flag initially
+             002027 4E         
+ 9211   87  a002028 4C4C 04            bset    TIE,C2I     ; arm OC2
+ 9212   88  a00202B 1410               SEI                   ; disallow interupts
+ 9213   89                      POLL
+ 9214   90  a00202D 4F4F 8003             BRCLR TFLG2, %10000000, CLEAR
+ 9215   91  a002031 1620 36               JSR OC2ISR
+ 9216   92                      CLEAR
+ 9217   93                      
+ 9218   94  a002034 20F7               BRA     POLL
+ 9219   95                      *====END OF MAIN ROUTINE
+ 9220   96                      
+ 9221   97                      *============= SERVICE PROCESS
+ 9222   98                      OC2ISR
+ 9223   99  a002036 180B 8000           MOVB   #$80,TFLG2   ; clear flag
+             00203A 4F         
+ 9224  100  a00203B 7210 00             INC    COUNT   ; one more interrupt interval counted
+ 9225  101  a00203E F610 00             LDAB   COUNT
+ 9226  102  a002041 F110 01             CMPB   NUMTICKS
+ 9227  103  a002044 2606                BNE    DONE  ; not one second yet so return
+ 9228  104  a002046 7910 00             CLR    COUNT
+ 9229  105  a002049 1620 4D             JSR    ONE.SECOND  ; one second has elapsed
+ 9230  106  a00204C 3D          DONE    RTS
+ 9231  107                      *============= END OF SERVICE ROUTINE
+ 9232  108                      ONE.SECOND    ; what to do every second
+ 9233  109  a00204D 1620 7B             JSR   DISPLAY
+ 9234  110  a002050 7210 02             INC   SECONDS
+ 9235  111  a002053 B610 02             LDAA  SECONDS
+ 9236  112  a002056 813C                CMPA  #60
+ 9237  113  a002058 2701                BEQ   ONE.MINUTE
+ 9238  114  a00205A 3D                  RTS
+ 9239  115                      ONE.MINUTE
+ 9240  116  a00205B 7910 02             CLR   SECONDS
+ 9241  117  a00205E 7210 03             INC   MINUTES
+ 9242  118  a002061 B610 03             LDAA  MINUTES
+ 9243  119  a002064 813C                CMPA  #60
+ 9244  120  a002066 2701                BEQ   ONE.HOUR
+ 9245  121  a002068 3D                  RTS
+ 9246  122                      ONE.HOUR
+ 9247  123  a002069 7910 03             CLR   MINUTES
+ 9248  124  a00206C 7210 04             INC   HOURS
+ 9249  125  a00206F B610 04             LDAA  HOURS
+ 9250  126  a002072 8118                CMPA  #24
+ 9251  127  a002074 2701                BEQ   ONE.DAY
+ 9252  128  a002076 3D                  RTS
+ 9253  129                      ONE.DAY
+ 9254  130  a002077 7910 04             CLR   HOURS
+ 9255  131  a00207A 3D                  RTS
+ 9256  132                      
+
+Freescale HC12-Assembler 
+(c) Copyright Freescale 1987-2010
+
+ Abs. Rel.   Loc    Obj. code   Source line
+ ---- ----   ------ ---------   -----------
+ 9257  133                      DISPLAY  ; DISPLAY THE TIME AS HH:MM:SS
+ 9258  134  a00207B 37                  PSHB
+ 9259  135          0000 0001   Simulation  EQU  1
+ 9260  136          0000 0000         ifndef  Simulation
+ 9271  147                             endif  
+ 9272  148                         
+ 9273  149  a00207C F610 04             LDAB   HOURS
+ 9274  150  a00207F 1620 B1             JSR    OUTDEC
+ 9275  151  a002082 C63A                LDAB   #':'
+ 9276  152  a002084 163A 1C             JSR    putchar
+ 9277  153  a002087 F610 03             LDAB   MINUTES
+ 9278  154  a00208A 1620 B1             JSR    OUTDEC
+ 9279  155  a00208D C63A                LDAB   #':'
+ 9280  156  a00208F 163A 1C             JSR    putchar
+ 9281  157                              
+ 9282  158  a002092 F610 02             LDAB   SECONDS
+ 9283  159  a002095 1620 B1             JSR    OUTDEC
+ 9284  160  a002098 C60D                LDAB   #$0D
+ 9285  161  a00209A 163A 1C             JSR   putchar
+ 9286  162  a00209D C60A                LDAB   #$0A
+ 9287  163  a00209F 163A 1C             JSR   putchar
+ 9288  164  a0020A2 33                  PULB
+ 9289  165  a0020A3 3D                  RTS
+ 9290  166                              
+ 9291  167                      HEX2BCD  ; assumes value to be converted is in ACC A and result in A
+ 9292  168  a0020A4 B701                TFR    A,B   ; make copy in B
+ 9293  169  a0020A6 C10A        UP      CMPB   #10
+ 9294  170  a0020A8 2506                BLO    DONE2
+ 9295  171  a0020AA C00A                SUBB   #10
+ 9296  172  a0020AC 8B06                ADDA   #6
+ 9297  173  a0020AE 20F6                BRA    UP
+ 9298  174                      DONE2
+ 9299  175  a0020B0 3D                 RTS
+ 9300  176                      
+ 9301  177                      OUTDEC
+ 9302  178  a0020B1 B710                TFR    B,A   ; HEX2BCD takes input from A
+ 9303  179  a0020B3 1620 A4             JSR    HEX2BCD
+ 9304  180  a0020B6 B701                TFR    A,B     ; putchar needs value in B
+ 9305  181  a0020B8 CE00 00             LDX   #0  ;
+ 9306  182  a0020BB 163A 33             JSR   out2hex   ; output B as 2 hex digits
+ 9307  183  a0020BE 3D                  RTS
+ 9308  184                              
+ 9309  185                                               
+ 9310  186                      ;**************************************************************
+ 9311  187                      ;*                 Interrupt Vectors                          *
+ 9312  188                      ;**************************************************************
+ 9313  189                                  ORG   Vreset
+ 9314  190  a00FFFE 2000                    DC.W  Entry         ; Reset Vector
+ 9315  191                      
+ 9316  192                      	          ORG   Vtimch2       ; setup  OC2 Vector
+ 9317  193  a00FFEA 2036                    DC.W  OC2ISR
+ 9318  194                      
+ 9319  195                       

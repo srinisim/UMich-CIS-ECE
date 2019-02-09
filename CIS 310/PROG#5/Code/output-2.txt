@@ -1,0 +1,27 @@
+                        ORG           $500
+                        MOVE          #79, $00002000
+                        TRAP          #1                       ;READLN (Y),  INPUT INTO DO
+LOOP1                   MOVE          DO, $00002004            ;STORE DO IN LOCATION Y
+                        MOVE          $00002000, DO            ;FETCH VARIABLE I FOR THE AD
+                        ADD           $00002004, DO            ;ADD Y+1
+                        MOVE          DO, $00002002            ; STORE THE SUM IN X
+LOOP2                   ADDI          #18, $00002002           ;ADD 18 TO X
+                        TRAP          #2                       ;PRINT X
+                        TRAP          #0                       ;STOP
+                        END 
+
+Address   Machine Code  Operands       Instructions   
+00000500  33FC          4f, 00002000   MOVE           #79, $00002000
+00000508  4E41                         TRAP           #1        
+0000050a  33C0          00002004       MOVE           DO, $00002004
+00000510  3039          00002000       MOVE           $00002000, DO
+00000516  D079          00002004       ADD            $00002004, DO
+0000051c  33C0          00002002       MOVE           DO, $00002002
+00000522  0679          12, 00002002   ADDI           #18, $00002002
+0000052a  4E42                         TRAP           #2        
+0000052c  4E40                         TRAP           #0        
+
+Symbol Table
+Label     Memory Address
+LOOP1     0000050a
+LOOP2     00000522

@@ -1,0 +1,20 @@
+10
+Date Time
+Appointment Date
+Calendar Appointment
+Circle Point
+Triangle Shape
+Rectangle Shape
+Square Rectangle
+Cone Circle
+Cylinder Circle
+Circle Shape
+8
+Time extends Date
+Calendar extends Time
+Cylinder extends Circle
+Cylinder extends Shape
+Time isExtendedBy Date
+Calendar isExtendedBy Time
+Circle isExtendedBy Cone
+Time isExtendedBy Shape

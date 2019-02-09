@@ -1,0 +1,70 @@
+body{
+    background-color: #00274c;
+    font-family: 'Roberto Mono', monospace;
+    color: #ffcd05;
+}
+
+/* Header */
+header{
+    margin-top: 50px;
+}
+
+input#comp.radioButton{
+    margin-left: 7px;
+}
+
+#gamesPlayed{
+    float: right;
+    margin-top: -54px;
+    padding-right: 9px;
+    font-size: 11px;
+}
+
+#timer{
+    float: left;
+    margin-top: -54px;
+    padding-left: 60px;
+}
+.container{
+    margin: 0 auto;
+    text-align: center;
+}
+.radioButton{
+    margin-left: 10px;
+}
+
+/* Body */
+table{
+    table-layout: fixed;
+    margin: 0 auto;
+}
+
+#main{
+    margin-top: 4%;
+}
+
+#pTurn{
+    margin: 15px auto;
+}
+
+.row>td{
+    font-size: 35px;
+    border: solid 5px cyan;
+    width: 100px;
+    height: 80px;
+    text-align: center;
+    vertical-align: top;
+    line-height: 65px;
+    display: inline-block;
+    margin-top: -4px;
+}
+
+.btnCtrl{
+    max-width: 300px;
+    margin-left: 9px;
+}
+
+/* Footer */
+#instrDtl{
+    color: #ffcd05;
+}

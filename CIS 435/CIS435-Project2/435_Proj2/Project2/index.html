@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tic-Tac-Toe</title>
+
+    <!-- Link index.html to styles.css  -->
+    <link rel="stylesheet" href="css/styles.css">
+
+    <!-- Google Font Using API -->
+    <link href="https://fonts.googleapis.com/css?family=Roboto+Mono" rel="stylesheet">
+
+    <!-- favicon -->
+    <link rel="icon" href="img/96852-200.png">
+
+</head>
+<body>
+
+    <header class="container">
+        <h1>Tic-Tac-Toe</h1>
+        <span id="gamesPlayed"></span>
+        <span id="timer">
+                <span id="hours"></span>
+                <span id="mins"></span>
+                <span id="secs"></span>
+        </span>
+
+        <div class="controls">
+            <h3>Player versus..</h3>
+            <input class="radioButton" type="radio" name="player"
+                   id="pVc" value="Computer" checked>Computer
+            <input class="radioButton" type="radio" name="player"
+                   id="pVp" value="Human">Player
+        </div>
+    </header><!-- end of header -->
+
+    <section id="main">
+        <table class="container boardContainer">
+            <!-- row 1 -->
+            <tr class="row">
+                <td id="square1" class="tile" onclick="checkGameMode()"></td>
+                <td id="square2" class="tile" onclick="checkGameMode()"></td>
+                <td id="square3" class="tile" onclick="checkGameMode()"></td>
+            </tr>
+            <!-- row 2 -->
+            <tr class="row">
+                <td id="square4" class="tile" onclick="checkGameMode()"></td>
+                <td id="square5" class="tile" onclick="checkGameMode()"></td>
+                <td id="square6" class="tile" onclick="checkGameMode()"></td>
+            </tr>
+            <!-- row 3 -->
+            <tr class="row">
+                <td id="square7" class="tile" onclick="checkGameMode()"></td>
+                <td id="square8" class="tile" onclick="checkGameMode()"></td>
+                <td id="square9" class="tile" onclick="checkGameMode()"></td>
+            </tr>
+        </table><!-- end of table-->
+
+        <!-- shows whose turn it is -->
+        <div id="pTurn" class="container">
+            <span id="playerTurn">Welcome! Press Start/Restart to begin!</span>
+        </div>
+
+        <div class="container">
+            <input type="button" class="btnCtrl" id="startBtn" value="Start/Restart">
+            <input type="button" class="btnCtrl" id="playAgainBtn" value="Play Again?"
+                   style="display: none">
+        </div>
+
+        <footer class="container">
+            <div id="instrDtl">
+              <p> -> Click Start/Restart Once To Start The Game <- </p>
+              <p> -> Double-Click to Restart The Game <- </p>
+            </div>
+        </footer>
+
+    </section><!-- end of main section-->
+
+    <!-- custom js -->
+    <script src="js/script.js"></script>
+</body>
+</html>

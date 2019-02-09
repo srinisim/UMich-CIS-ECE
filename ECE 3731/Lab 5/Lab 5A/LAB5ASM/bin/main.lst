@@ -1,0 +1,132 @@
+
+Freescale HC12-Assembler 
+(c) Copyright Freescale 1987-2010
+
+ Abs. Rel.   Loc    Obj. code   Source line
+ ---- ----   ------ ---------   -----------
+    1    1                      ;*****************************************************************
+    2    2                      ;* ParsingLoop.ASM
+    3    3                      ;* 
+    4    4                      ;*****************************************************************
+    5    5                      ; export symbols
+    6    6                                  XDEF Entry, _Startup            ; export 'Entry' symbol
+    7    7                                  ABSENTRY Entry        ; for absolute assembly: mark this as application entry point
+    8    8                      
+    9    9                      ; Include derivative-specific definitions 
+   10   10                      		INCLUDE 'derivative.inc' 
+ 8670 8653i                             ENDIF
+ 8679   11                      		
+ 8680   12                      ;-------------------------------------------------- 
+ 8681   13                      ; Equates Section  
+ 8682   14                      ;----------------------------------------------------  
+ 8683   15          0000 2000   ROMStart    EQU  $2000  ; absolute address to place my code
+ 8684   16                      
+ 8685   17                      ;---------------------------------------------------- 
+ 8686   18                      ; Variable/Data Section
+ 8687   19                      ;----------------------------------------------------  
+ 8688   20                                  ORG RAMStart   ; loc $1000  (RAMEnd = $3FFF)
+ 8689   21                      ; Insert here your data definitions here
+ 8690   22                      
+ 8691   23  a001000 0A0D        PROMPT      dc.b    $0A, $0D   ; CR LF
+ 8692   24  a001002 5479 7065               dc.b    "Type a character:  Y N M  "
+             001006 2061 2063  
+             00100A 6861 7261  
+             00100E 6374 6572  
+             001012 3A20 2059  
+             001016 204E 204D  
+             00101A 2020       
+ 8693   25  a00101C 00                      dc.b    0    ; using zero terminated strings
+ 8694   26                                  
+ 8695   27  a00101D 2020 2059   YESSTRG     dc.b   "   YES  "
+             001021 4553 2020  
+ 8696   28  a001025 00                      dc.b    0
+ 8697   29                      
+ 8698   30  a001026 2020 204E   NOSTRG      dc.b   "   NO   "
+             00102A 4F20 2020  
+ 8699   31  a00102E 00                      dc.b    0
+ 8700   32                      
+ 8701   33  a00102F 2020 204D   MAYBESTRG    dc.b  "   MAYBE  "
+             001033 4159 4245  
+             001037 2020       
+ 8702   34  a001039 00                       dc.b   0
+ 8703   35                      
+ 8704   36                      
+ 8705   37                             INCLUDE 'utilities.inc'
+ 8821   38                             INCLUDE 'LCD.inc'
+ 9163   39                      
+ 9164   40                      ;---------------------------------------------------- 
+ 9165   41                      ; Code Section
+ 9166   42                      ;---------------------------------------------------- 
+ 9167   43                                  ORG   ROMStart  ; loc $2000
+ 9168   44                      Entry:
+ 9169   45                      _Startup:
+ 9170   46                                  ; remap the RAM &amp; EEPROM here. See EB386.pdf
+ 9171   47          0000 0000    ifdef _HCS12_SERIALMON
+ 9182   58                        endif
+ 9183   59                      
+ 9184   60                      ;---------------------------------------------------- 
+ 9185   61                      ; Insert your code here
+ 9186   62                      ;---------------------------------------------------- 
+ 9187   63  a002000 CF20 00              LDS   #ROMStart ; load stack pointer
+
+Freescale HC12-Assembler 
+(c) Copyright Freescale 1987-2010
+
+ Abs. Rel.   Loc    Obj. code   Source line
+ ---- ----   ------ ---------   -----------
+ 9188   64  a002003 163A 00              JSR   TermInit  ; needed for Simulator only
+ 9189   65  a002006 163A 56              JSR   led_enable   ; eanble PORTB for LED's
+ 9190   66  a002009 CC10 00     LOOP     LDD   #PROMPT   ; pass the adr of the string
+ 9191   67  a00200C 163A 23              JSR   printf	; print the string         
+ 9192   68  a00200F 163A 15              JSR   getchar  ; call getchar function -result is: character in B
+ 9193   69  a002012 1620 51              JSR   ClearLeds  ; clear LED's when starting over
+ 9194   70  a002015 C159        YCASE    CMPB  #'Y'  ; is it a Y ?
+ 9195   71  a002017 2603        	       BNE   NCASE  ; jump ahead if not
+ 9196   72  a002019 1620 2D     	       JSR   YFCN   ; else do corresponding function for Y
+ 9197   73  a00201C C14E        NCASE    CMPB  #'N'  ; is it a N ?
+ 9198   74  a00201E 2603                 BNE   MCASE ; jump ahead if not
+ 9199   75  a002020 1620 39              JSR   NFCN ;  else do corresponding function for N
+ 9200   76  a002023 C14D        MCASE    CMPB  #'M'  ; is it a M ?
+ 9201   77  a002025 2603                 BNE   NEXT   ; jump ahead if not
+ 9202   78  a002027 1620 45     	       JSR   MFCN ; else do corresponding function for M
+ 9203   79  a00202A 0620 09     NEXT     JMP   LOOP  ; loop for more input
+ 9204   80                      
+ 9205   81                      ; Note: main program is an endless loop and subroutines follow
+ 9206   82                      ; (Must press reset to quit.)
+ 9207   83                      
+ 9208   84                      ;===================================================================
+ 9209   85                      ; FUNCTIONS CALLED BY MAIN LOOP
+ 9210   86                      
+ 9211   87  a00202D 3B          YFCN    PSHD
+ 9212   88  a00202E CC10 1D           	LDD   	#YESSTRG   ; pass the address of the string
+ 9213   89  a002031 163A 23             JSR     printf	    ; print the string
+ 9214   90  a002034 4C01 01             BSET    PORTB,$01   ; light LED0
+ 9215   91  a002037 3A                  PULD
+ 9216   92  a002038 3D                  RTS
+ 9217   93                              
+ 9218   94                      NFCN   
+ 9219   95  a002039 3B                  PSHD
+ 9220   96  a00203A CC10 26           	LDD    #NOSTRG     ; pass adr. of string
+ 9221   97  a00203D 163A 23             JSR    printf	   ; call printf
+ 9222   98  a002040 4C01 02             BSET   PORTB,$02   ; light LED1
+ 9223   99  a002043 3A                  PULD
+ 9224  100  a002044 3D                  RTS
+ 9225  101                              
+ 9226  102                      MFCN    
+ 9227  103  a002045 3B                  PSHD
+ 9228  104  a002046 CC10 2F           	LDD    #MAYBESTRG  ; pass adr. of string
+ 9229  105  a002049 163A 23             JSR    printf	   ; print the string
+ 9230  106  a00204C 4C01 04             BSET   PORTB,$04   ; light LED2
+ 9231  107  a00204F 3A                  PULD
+ 9232  108  a002050 3D                  RTS
+ 9233  109                              
+ 9234  110                      ClearLeds
+ 9235  111  a002051 7900 01             CLR   PORTB      ; clear all LED's
+ 9236  112  a002054 3D                  RTS                                  
+ 9237  113                                               
+ 9238  114                      ;**************************************************************
+ 9239  115                      ;*                 Interrupt Vectors                          *
+ 9240  116                      ;**************************************************************
+ 9241  117                                  ORG   Vreset
+ 9242  118  a00FFFE 2000                    DC.W  Entry         ; Reset Vector
+ 9243  119                       

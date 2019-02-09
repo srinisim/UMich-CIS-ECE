@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+<link rel="stylesheet" type="text/css" href="mystyles.css" media="screen" />
+<link rel="stylesheet" type="javascript" href="script.js" media="screen" />
+<link rel="stylesheet" type="javascript" href="modifydatabase.js" media="screen" />
+<script src="modifydatabase.js"></script>
+<link rel="stylesheet" type="text/css" href="operator.html"/>
+<head>
+<head>
+  <script type="text/javascript">
+    function alertMessage()
+    {
+      if (confirm("Are you sure?")) 
+	{
+		var name = document.getElementById("name").value;
+		var idNumber = document.getElementById("idNumber").value;
+		var address = document.getElementById("address").value;
+		var status = 0;
+		if (document.getElementById("goodStanding").checked == true) {
+			status = 1;
+		}
+		var email = document.getElementById("myText").value;
+		addMember(memberNumber, name, address, email, status)
+	location.href="operator.html";
+	}
+    }
+  </script>
+</head>
+</head>
+<body>
+<br>
+<strong><h1 style="font-size:60px;">ChocAn Company</h1><strong>
+<center><p>Add Member</p></center>
+<div>
+<p><label>Name</label>
+<input type ="text" id="name" value="Name here" /> </p>
+<p> <label>Id Number</label>
+<input type ="text" id="idNumber" value="Id here" /></p>
+<p> <label>Address</label>
+<input type ="text" id="address" value="Address here" /></p>
+<p> <label>Status</label>
+<form>
+  <input class="radio" id="goodStanding" type="radio" name="type1" value="good standing"> Good Standing<br>
+  <input class="radio" id="suspended" type="radio" name="type1" value="suspended"> Suspended<br>
+</form>
+</p>
+<p>
+<label>Email address</label>
+<input type ="text" id="myText" value="Email Here" /> 
+<input type="button" id="btnShowMsg" value="Submit" onClick= 'alertMessage()' />
+</p>
+</div>
+</body>
+</html>

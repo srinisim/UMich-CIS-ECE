@@ -1,0 +1,206 @@
+# Srinivas Simhan
+# CIS 350 - Elenbogen: Winter 2018
+# Program 2b
+# Due: 2/6/18
+
+class Node:
+	def __init__(self, label):
+		self.children = []
+		self.extends = []
+		self.name = label
+"""
+PRE:
+	- the name of the child is given
+POST:
+	- the name of the child is appended
+DESCRIPTION:
+	- use this function to append a child to the a node, therefore extending the tree
+"""
+	def addChild(self, childPtr):
+		self.children.append(childPtr)
+		childPtr.extends.append(self)
+"""
+PRE:
+	- the name of the target is given
+POST:
+	- the function will return if you find the target or not
+DESCRIPTION:
+	- the purpose of the function is to find the target node and return if you found it
+"""
+	def find(self, target):
+		if self.name == target:
+			return self
+		else:
+			for node in self.children:
+				findPtr = node.find(target)
+				if findPtr is not None:
+					return findPtr
+		return None
+"""
+PRE:
+	- the level is given
+POST:
+	- it will iterate through the levels and print the nodes
+DESCRIPTION:
+	- this function is used to help print the tree
+"""
+	def treePrint(self,level):
+		for i in range(1, 5 * level):
+			print(' ', end=""),
+			print(self.name)
+			for tree in self.children:
+				tree.treePrint( level + 1)
+"""
+PRE:
+	- no givens
+POST:
+	- it will call treePrint and print the tree
+DESCRIPTION:
+	- calls treePrint function so that it can print the tree
+"""
+	def Print(self):
+		self.treePrint(0)
+
+class Program:
+	def __init__(self):
+		self.classes = []
+		self. allNodes = []
+"""
+PRE:
+	- the name of the target is given
+POST:
+	- the function will return if you find the target or not
+DESCRIPTION:
+	- the purpose of the function is to find the target node and return if you found it
+"""
+	def find(self, target):
+		for tree in self.classes:
+			targetptr = tree.find(target)
+			if targetptr is not None:
+				return targetptr
+		return None
+"""
+PRE:
+	-
+POST:
+	-
+DESCRIPTION:
+	-
+"""
+	def Print(self):
+		self.allNodes.sort(key=lambda node: node.name)
+		for node in self.allNodes:
+			extends = self.getExtends(node, 0)
+			extends.sort(key=lambda extend: extend[1])
+			print(node.name, end='')
+			for extend in extends:
+				print('', extend[0].name, end='')
+			print()
+"""
+PRE:
+	-
+POST:
+	-
+DESCRIPTION:
+	-
+"""
+	def add(self, parent, child):
+		parentPtr = self.find(parent)
+		childPtr = self.find(child)
+
+		if parentPtr is None:
+			parentPtr = Node(parent)
+			self.allNodes.append(parentPtr)
+			self.classes.append(parentPtr)
+		if childPtr is None:
+			childPtr = Node(child)
+			self.allNodes.append(childPtr)
+			parentPtr.addChild(childPtr)
+		else:
+			if childPtr is None:
+				childPtr = Node(child)
+				self.allNodes.append(childPtr)
+			parentPtr.addChild(childPtr)
+			for className in self.classes:
+				if className.name == child:
+					self.classes.remove(className)
+"""
+PRE:
+	-
+POST:
+	-
+DESCRIPTION:
+	-
+"""
+	def getExtends(self, node, distance):
+		extendsList = []
+		for extend in node.extends:
+			extendsList.append((extend, distance))
+			extendsList += self.getExtends(extend, distance + 1)
+		return extendsList
+"""
+PRE:
+	-
+POST:
+	-
+DESCRIPTION:
+	-
+"""
+	def query(self, c1, r, c2):
+		c1Node = self.find(c1) # find c1
+		c2Node = self.find(c2) # find c2
+		source = None
+		target = None
+		if c1 == c2:
+			return True
+		if r == "extends":
+			# does c1 extend c2 ?
+			source = c1Node
+			target = c2Node
+		elif r == "isExtendedBy":
+			# does c2 extend c1 ?*
+			source = c2Node
+			target = c1Node
+
+		extends = self.getExtends(source, 0) # get list of everything source extends. list is of tuples (Node, int distance)
+		for extend in extends: # look for target
+			# is the Node in extend target?
+			if extend[0] is target:
+				return True
+		return False # couldn't find :(
+"""
+PRE:
+	-
+POST:
+	-
+DESCRIPTION:
+	-
+"""
+def main():
+	prog = Program()
+	numPairs = int(input())
+	for num in range(numPairs):
+	    relation = input().split()
+	    parent = relation[1]
+	    child = relation[0]
+	    prog.add(parent, child)
+
+	# how many queries?
+	numQuery = int(input())
+	for m in range(numQuery):
+		# read in and respond to each one
+		relation = input().split()
+		c1 = relation[0]
+		r = relation[1]
+		c2 = relation[2]
+
+		result = None
+		if prog.query(c1, r, c2):
+			result = "true"
+		else:
+			result = "false"
+		print(m + 1, result)
+
+	prog.Print()
+
+main()

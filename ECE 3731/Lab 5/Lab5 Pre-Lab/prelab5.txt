@@ -1,0 +1,167 @@
+;*****************************************************************
+;* LAB4.ASM
+;* 
+;*****************************************************************
+; export symbols
+            XDEF Entry, _Startup            ; export 'Entry' symbol
+            ABSENTRY Entry        ; for absolute assembly: mark this as application entry point
+
+; Include derivative-specific definitions 
+		INCLUDE 'derivative.inc' 
+		
+;-------------------------------------------------- 
+; Equates Section  
+;----------------------------------------------------  
+ROMStart    EQU  $2000  ; absolute address to place my code
+RED:        EQU     $10    ; PP4
+BLUE:       EQU     $20    ; PP5
+GREEN:      EQU     $40    ; PP6
+
+;---------------------------------------------------- 
+; Variable/Data Section
+;----------------------------------------------------  
+            ORG RAMStart   ; loc $1000  (RAMEnd = $3FFF)
+; Insert here your data definitions here
+SEED   dc.b   0
+
+       INCLUDE 'utilities.inc'
+       INCLUDE 'LCD.inc'
+
+;---------------------------------------------------- 
+; Code Section
+;---------------------------------------------------- 
+            ORG   ROMStart  ; loc $2000
+Entry:
+_Startup:
+            ; remap the RAM &amp; EEPROM here. See EB386.pdf
+ ifdef _HCS12_SERIALMON
+            ; set registers at $0000
+            CLR   $11                  ; INITRG= $0
+            ; set ram to end at $3FFF
+            LDAB  #$39
+            STAB  $10                  ; INITRM= $39
+
+            ; set eeprom to end at $0FFF
+            LDAA  #$9
+            STAA  $12                  ; INITEE= $9
+            JSR   PLL_init      ; initialize PLL  
+  endif
+
+;---------------------------------------------------- 
+; Insert your code here
+;---------------------------------------------------- 
+ ;*Note: Make sure DIP sw’s are all up
+             JSR    led_enable    ; init. PORTB for LED’s
+             bset    DDRP,  RED+GREEN+BLUE  ; make pp4-pp6  outputs
+             bset    DDRM, 4    ; make PM2 an output
+             bclr    PTM, 4   ; make PM2 low to enable RGB
+
+MAIN
+*Check for PTH pin 0 SW press  (SW5)  if not check next one
+CHECKPH0  BRSET   PTH, $01,CHECKPH1
+ 		JSR   PH0FCN  ; if button pressed call function for button
+ 		JSR   DELAY_250_MS
+*Check for PTH pin 1 SW press (SW4)  if not check next one
+CHECKPH1  BRSET   PTH, %00000010,CHECKPH2
+ 		JSR   PH1FCN  ; if button pressed call function for button
+ 		JSR   DELAY_250_MS
+*Check for PTH pin 2 SW press  (SW3) if not check next one
+CHECKPH2  BRSET   PTH, %00000100, NEXT
+ 		JSR   PH2FCN  ; if button pressed call function for button
+ 		JSR   DELAY_250_MS
+NEXT	JMP   MAIN
+
+
+; Note: main program is an endless loop and subroutines follow
+; (Must press reset to quit.)
+
+;===================================================================
+; FUNCTIONS CALLED BY MAIN LOOP
+
+;-----------BLINK BLUE 10 FUNCTION-----------------
+PH0FCN     
+          ;bclr   PTP,  RED+GREEN+BLUE  ; clear all
+          ;bset   PTP,  BLUE   ; turn on blue
+          
+          LDAA #10
+REPEAT:        
+          bset   PTP,  BLUE
+          jsr    DELAY_250_MS    ; delay for 250 milisecods
+          bclr   PTP,  RED+GREEN+BLUE  ; clear all
+          jsr    DELAY_250_MS    ; delay for 250 milisecods
+         
+          
+          DECA
+          CMPA #0
+          BNE REPEAT
+          RTS
+          
+          
+;-----------Decrement 4-bit counter on PORTB-----------------
+PH1FCN    ;decrement 
+          bclr   PTP,  RED+GREEN+BLUE  ; clear all
+          bclr   PORTB, %11110000
+          bset   PTP,  GREEN   ; turn on green
+          LDAA PORTB
+          DECA
+          STAA PORTB
+          jsr     DELAY_250_MS    ; delay for 1 second
+          bclr   PTP,  RED+GREEN+BLUE  ; clear all
+          jsr     DELAY_250_MS    ; delay for 1 second
+          bset   PTP,  RED     ; turn on red
+          CMPA #$0
+          BEQ  YOLO
+           
+          rts
+
+PH2FCN     ;random number generator
+           JSR RAND
+           LDAA SEED
+           STAA PORTB
+           rts
+           
+YOLO      ;if equal to zero, reset to 1111
+          LDAA SEED
+          STAA %00001111
+          rts
+
+;---------------------------RANDOM/DELAYS--------------------------
+RAND     LDAA     SEED
+         LSLA
+         ADCA      #20
+         STAA      SEED   
+         RTS
+
+;250_MS
+DELAY_250_MS
+          LDX #$00FA        ;load in 250
+LOOP_250_MS
+          JSR DELAY_1_MS    ;call delay 1 milisecond
+          DEX               ;decrease X
+          CPX #$0
+          BNE LOOP_250_MS     ;branch until X = 0
+          RTS               ;return
+;1_S          
+DELAY_1_S
+          LDX #$03E8        ;load in 1000
+LOOP_1_S
+          JSR DELAY_1_MS    ;call delay 1 milisecond
+          DEX               ;decrease X
+          CPX #$0
+          BNE LOOP_1_S     ;branch until X = 0
+          RTS               ;return
+;1_MS          
+DELAY_1_MS                  
+          LDY #$1770        ;load in 6000
+LOOP_1_MS                   
+          DEY               ;Decrement y
+          CPY #$0
+          BNE LOOP_1_MS     ;
+          RTS                
+                         
+;**************************************************************
+;*                 Interrupt Vectors                          *
+;**************************************************************
+            ORG   Vreset
+            DC.W  Entry         ; Reset Vector
+ 

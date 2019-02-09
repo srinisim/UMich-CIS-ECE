@@ -1,0 +1,68 @@
+body {
+    background-color: lightblue;
+}
+
+h1 {
+    text-align: center;
+}
+
+p {
+    font-family: verdana;
+    font-size: 20px;
+}
+
+#button {
+    width: 6em;
+    border: 2px solid black;
+    background: #ffe;
+    border-radius: 5px;
+	position  :fixed;
+	bottom: 0;
+	right: 0;
+}	
+.radio
+{
+	margin-left:200px;
+}
+.options
+{
+	background-color: #0066ff;
+	margin: 50px;
+    	width: 210px;
+    	padding: 35px;
+	margin-right : -395px;
+}
+.option
+{
+	background-color: #0066ff;
+	margin: 50px;
+    	width: 210px;
+    	padding: 35px;
+	margin-left: -395px;
+}
+.selection
+{
+	background-color: #0066ff;
+	margin: 50px;
+    	width: 210px;
+    	padding: 35px;
+}
+* {
+    box-sizing: border-box;
+}
+
+/* Create two equal columns that floats next to each other */
+.column {
+    float: left;
+    width: 50%;
+    padding: 10px;
+    height: 300px; /* Should be removed. Only for demonstration */
+}
+
+label
+{
+display:inline-block;
+width:200px;
+margin-right:0px;
+text-align:right;
+}

@@ -1,0 +1,10 @@
+8
+B G
+B A
+D B
+C G
+E C
+F C
+Q A
+G W
+0
