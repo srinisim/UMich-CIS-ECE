@@ -1,0 +1,89 @@
+/*----------------------------*/
+/*---------Global Styles------*/
+/*----------------------------*/
+
+
+body {
+	font-family: 'Fredoka One', cursive;
+}
+
+
+/*----------------------------*/
+/*---------Header Styles------*/
+/*----------------------------*/
+
+header {
+	margin: 0 auto;
+	width: 600px;
+	text-align: center;
+}
+header > h1 {
+	text-decoration: underline blue;
+}
+
+header > h5 {
+	margin: 0px 0px; 
+}
+
+/*----------------------------*/
+/*---------Table Styles-------*/
+/*----------------------------*/
+
+table {
+    border-collapse: collapse;
+    margin: 20px auto;
+    font-size: 30px;
+}
+
+table, th, td {
+    border: 2px solid blue;
+}
+
+td {
+	height: 50px;
+	width: 300px;
+	text-align: center;
+	font-weight: bold;
+}
+
+/*----------------------------*/
+/*---------Menu Styles--------*/
+/*----------------------------*/
+
+.menu {
+	margin: 0 auto;
+	width: 400px;
+	height: 250px;
+	text-align: center;
+	border-style: 2px solid black;
+	box-shadow: blue 0px 0px 8px 2px;
+	border-radius: 15px;
+}
+
+.menu-radios {
+	display: inline-block;
+	padding: 5px 10px;
+}
+
+.menu-radios > label {
+	font-size: 15px;
+}
+
+.menu-radios > input {
+	height: 16px;
+	width: 16px;
+}
+
+.menu-button {
+	background-color: white;
+    color: black;
+    border: 2px solid blue;
+    padding: 15px 15px;
+    margin: 0px 10px;
+    font-size: 15px;
+}
+
+.menu-button:hover {
+    background-color: blue;
+    color: white;
+}

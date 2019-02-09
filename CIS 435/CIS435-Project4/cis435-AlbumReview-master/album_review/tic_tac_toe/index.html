@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Tic-Tac-Toe</title>
+  <link rel="stylesheet" href="normalize.css">
+	<link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Fredoka+One">
+  <script src="script.js"></script>
+</head>
+<body>
+  <header>
+    <h1>Error 404: Welcome to Tic-Tac-Toe</h1>
+    <h5>Game Timer <span id="gameTimerMins"></span> : <span id="gameTimerSecs"></span></h5>
+  </header>
+  <table id="table">
+    <tr>
+      <td></td>
+      <td></td>
+      <td></td>
+    </tr>
+    <tr>
+      <td></td>
+      <td></td>
+      <td></td>
+    </tr>
+    <tr>
+      <td></td>
+      <td></td>
+      <td></td>
+    </tr>
+  </table>
+  <div class="menu">
+      <h2>Select Game Mode</h2>
+      <form id="gameMode" name="gameMode">
+        <div class="menu-radios">
+          <label for="pvp">Player vs. Player</label><br><br>
+          <input id="pvpRadio" type="radio" name="mode" value="pvp"/>
+          <span class="custom-radio"></span>
+        </div>
+        <div class="menu-radios">
+          <label for="pvc">Player vs. Computer</label><br><br>
+          <input id="pvcRadio" type="radio" name="mode" value="pvc"/>
+          <span class="custom-radio"></span>
+        </div>
+      </form>
+      <h2>Games Played : <span id="gamesPlayed"></span></h2>
+      <h2>The Winner is : <span id="gameWinner"></span></h2>
+      <button id="restartStartBtn" class="menu-button" disabled>Start/Restart</button>
+      <button id="playAgainBtn" class="menu-button" disabled>Play Again ?</button>
+  </div>
+</body>
+</html>
