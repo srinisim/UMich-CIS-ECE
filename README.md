@@ -1,7 +1,7 @@
 # UMich-CIS-ECE
-##Code repositories from CIS and ECE courses
+Code repositories from CIS and ECE courses
 
-###Courses Included:
+Courses Included:
 * **CIS 150** - Computer Science I - Dr. Brahim Medjahed
 * **CIS 200** - Computer Science II - Prof. Tom Steiner
 * **CIS 296** - Java Programming - Dr. John Baugh
