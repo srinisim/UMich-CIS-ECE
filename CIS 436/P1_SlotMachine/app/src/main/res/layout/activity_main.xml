@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.adam.p1_slotmachine.MainActivity">
+
+    <TextView
+        android:id="@+id/title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="14dp"
+        android:text="@string/strTitle"
+        android:textSize="24sp"
+        tools:text="@string/strTitle" />
+
+    <EditText
+        android:id="@+id/input_amount"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/label_amt"
+        android:layout_alignBottom="@+id/label_amt"
+        android:layout_marginLeft="19dp"
+        android:layout_toRightOf="@+id/label_amt"
+        android:ems="10"
+        android:hint="@string/strAmountHint"
+        android:inputType="number"
+        android:singleLine="false"
+        android:importantForAutofill="no"
+        android:layout_marginStart="19dp"
+        android:layout_toEndOf="@+id/label_amt" />
+
+    <TextView
+        android:id="@+id/label_amt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/title"
+        android:layout_marginLeft="20dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="40dp"
+        android:text="@string/strAmount"
+        tools:text="Amount" />
+
+    <Button
+        android:id="@+id/btn_setVal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/input_amount"
+        android:layout_alignStart="@+id/input_amount"
+        android:layout_below="@+id/input_amount"
+        android:layout_marginTop="25dp"
+        android:text="@string/strSetValBtn" />
+
+    <Button
+        android:id="@+id/btnNewGame"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/btn_setVal"
+        android:layout_alignStart="@+id/btn_setVal"
+        android:layout_below="@+id/btn_setVal"
+        android:layout_marginTop="27dp"
+        android:text="@string/strNewGameBtn" />
+
+    <TextView
+        android:id="@+id/slot1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="55dp"
+        android:text="@string/strDefaultSlot"
+        android:layout_below="@+id/btnNewGame"
+        android:layout_alignLeft="@+id/btnRunSlot"
+        android:layout_alignStart="@+id/btnRunSlot"
+        android:layout_marginLeft="23dp"
+        android:layout_marginStart="23dp" />
+
+    <TextView
+        android:id="@+id/slot2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/strDefaultSlot"
+        android:layout_above="@+id/btnRunSlot"
+        android:layout_centerHorizontal="true" />
+
+    <TextView
+        android:id="@+id/slot3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/strDefaultSlot"
+        android:layout_above="@+id/btnRunSlot"
+        android:layout_alignRight="@+id/input_amount"
+        android:layout_alignEnd="@+id/input_amount" />
+
+    <Button
+        android:id="@+id/btnRunSlot"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignEnd="@+id/title"
+        android:layout_alignRight="@+id/title"
+        android:layout_below="@+id/slot1"
+        android:layout_marginTop="31dp"
+        android:layout_toRightOf="@+id/label_amt"
+        android:text="@string/strSlotBtn"
+        android:layout_toEndOf="@+id/label_amt" />
+
+    <TextView
+        android:id="@+id/label_bank"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/strBankLabel"
+        android:layout_above="@+id/btnNewGame"
+        android:layout_alignRight="@+id/input_amount"
+        android:layout_alignEnd="@+id/input_amount" />
+
+    <TextView
+        android:id="@+id/displayBankAmount"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/strDefaultAmount"
+        android:layout_alignBaseline="@+id/label_bank"
+        android:layout_alignBottom="@+id/label_bank"
+        android:layout_toRightOf="@+id/label_bank"
+        android:layout_toEndOf="@+id/label_bank"
+        android:layout_marginLeft="16dp"
+        android:layout_marginStart="16dp" />
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="16dp"
+        android:layout_marginLeft="42dp"
+        android:layout_marginStart="42dp"
+        android:layout_toEndOf="@+id/title"
+        android:layout_toRightOf="@+id/title"
+        android:text="@string/strDefaultAmount" />
+
+</RelativeLayout>

@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity">
+
+    <TextView
+        android:id="@+id/timeInputLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="30dp"
+        android:layout_marginTop="35dp"
+        android:text="@string/timeInputLabel"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <EditText
+        android:id="@+id/inputTime"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/timeInputLabel"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginStart="16dp"
+        android:ems="10"
+        android:inputType="time"
+        app:layout_constraintStart_toEndOf="@+id/timeInputLabel"
+        tools:layout_editor_absoluteY="16dp" />
+
+    <Button
+        android:id="@+id/setCountBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/inputTime"
+        android:layout_alignStart="@+id/inputTime"
+        android:layout_alignLeft="@+id/inputTime"
+        android:layout_marginStart="68dp"
+        android:layout_marginTop="32dp"
+        android:text="@string/setCountBtn"
+        app:layout_constraintStart_toStartOf="@+id/inputTime"
+        app:layout_constraintTop_toBottomOf="@+id/inputTime" />
+
+    <TextView
+        android:id="@+id/notifLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/setCountBtn"
+        android:layout_alignStart="@+id/timeInputLabel"
+        android:layout_alignLeft="@+id/timeInputLabel"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="160dp"
+        android:text="@string/notifLabel"
+        app:layout_constraintStart_toStartOf="@+id/timeInputLabel"
+        app:layout_constraintTop_toBottomOf="@+id/timeInputLabel" />
+
+    <TextView
+        android:id="@+id/messageLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/notifLabel"
+        android:layout_alignStart="@+id/notifLabel"
+        android:layout_alignLeft="@+id/notifLabel"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="40dp"
+        android:text="@string/mesasgeLabel"
+        app:layout_constraintStart_toStartOf="@+id/notifLabel"
+        app:layout_constraintTop_toBottomOf="@+id/notifLabel" />
+
+    <Button
+        android:id="@+id/countDownBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/messageLabel"
+        android:layout_marginStart="76dp"
+        android:layout_marginTop="36dp"
+        android:layout_toEndOf="@+id/messageLabel"
+        android:layout_toRightOf="@+id/messageLabel"
+        android:text="@string/cntDwnBtnLabel"
+        app:layout_constraintStart_toEndOf="@+id/messageLabel"
+        app:layout_constraintTop_toBottomOf="@+id/messageText" />
+
+    <Spinner
+        android:id="@+id/notifSpinner"
+        android:layout_width="219dp"
+        android:layout_height="20dp"
+        android:layout_alignTop="@+id/notifLabel"
+        android:layout_marginStart="4dp"
+        android:layout_marginTop="80dp"
+        android:layout_toEndOf="@+id/notifLabel"
+        app:layout_constraintStart_toEndOf="@+id/notifLabel"
+        app:layout_constraintTop_toBottomOf="@+id/setCountBtn" />
+
+    <EditText
+        android:id="@+id/messageText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/messageLabel"
+        android:layout_alignEnd="@+id/notifSpinner"
+        android:layout_alignRight="@+id/notifSpinner"
+        android:layout_marginStart="76dp"
+        android:layout_marginTop="28dp"
+        android:ems="10"
+        android:inputType="textPersonName"
+        android:text="@string/messageDefaultText"
+        app:layout_constraintStart_toEndOf="@+id/messageLabel"
+        app:layout_constraintTop_toBottomOf="@+id/notifSpinner" />
+
+</android.support.constraint.ConstraintLayout>

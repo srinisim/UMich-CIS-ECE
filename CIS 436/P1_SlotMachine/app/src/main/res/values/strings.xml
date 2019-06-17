@@ -1,0 +1,12 @@
+<resources>
+    <string name="app_name">P1</string>
+    <string name="strTitle">Slot Machine Simulator!</string>
+    <string name="strSetValBtn">Set Value</string>
+    <string name="strAmount">Amount:</string>
+    <string name="strNewGameBtn">New Game</string>
+    <string name="strDefaultSlot">1-9</string>
+    <string name="strSlotBtn">Pull Lever</string>
+    <string name="strBankLabel">Bank:</string>
+    <string name="strDefaultAmount">$0</string>
+    <string name="strAmountHint">Insert a number</string>
+</resources>
