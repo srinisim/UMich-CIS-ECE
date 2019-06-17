@@ -13,3 +13,4 @@ Courses Included:
 * **CIS 435** - Web Technology - Dr. John Baugh
 * **CIS 436** - Mobile Applications Design & Implimentation - Dr. John Baugh
 * **CIS 450** - Operating Systems - Dr. Jinhua Guo
+* **CIS 479** - Artificial Intelligence- Dr. Bruce Maxim
